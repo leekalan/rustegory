@@ -1,7 +1,10 @@
 [package]
 name = "wrappr"
 version = "0.1.0"
+authors = ["kalan lee"]
 edition = "2021"
+description = "A libary for some useful wrapping traits"
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
