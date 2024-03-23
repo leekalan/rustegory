@@ -33,27 +33,27 @@ impl<T> Composer<Vec<T>> for Vec<T> {
     }
 }
 
-impl<T: Copy> WrapperRef<T, Vec<T>> for T {
-    fn wrap_ref(self, generic: impl Borrow<T>) -> Vec<T> {
+impl<'a, T: Copy + 'a> WrapperRef<'a, T, Vec<T>> for T {
+    fn wrap_ref(self, generic: &impl Borrow<T>) -> Vec<T> {
         vec![self, *generic.borrow()]
     }
 }
 
-impl<T: Copy> WrapperRef<[T], Vec<T>> for T {
-    fn wrap_ref(self, generic: impl Borrow<[T]>) -> Vec<T> {
+impl<'a, T: Copy + 'a> WrapperRef<'a, [T], Vec<T>> for T {
+    fn wrap_ref(self, generic: &impl Borrow<[T]>) -> Vec<T> {
         let vec = Vec::from(generic.borrow());
         self.wrap(vec)
     }
 }
 
-impl<T: Copy> ComposerRef<T> for Vec<T> {
-    fn compose_ref(&mut self, generic: impl Borrow<T>) -> &mut Self {
+impl<'a, T: Copy + 'a> ComposerRef<'a, T> for Vec<T> {
+    fn compose_ref(&mut self, generic: &impl Borrow<T>) -> &mut Self {
         self.compose(*generic.borrow())
     }
 }
 
-impl<T: Copy> ComposerRef<[T]> for Vec<T> {
-    fn compose_ref(&mut self, generic: impl Borrow<[T]>) -> &mut Self {
+impl<'a, T: Copy + 'a> ComposerRef<'a, [T]> for Vec<T> {
+    fn compose_ref(&mut self, generic: &impl Borrow<[T]>) -> &mut Self {
         self.extend(generic.borrow());
         self
     }

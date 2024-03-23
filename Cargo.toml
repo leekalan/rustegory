@@ -1,6 +1,6 @@
 [package]
 name = "wrappr"
-version = "1.0.0"
+version = "1.1.0"
 authors = ["kalan lee"]
 edition = "2021"
 description = "A libary for some useful wrapping traits"

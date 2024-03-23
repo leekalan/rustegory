@@ -84,5 +84,24 @@ pub mod wrapper;
 
 #[cfg(test)]
 mod tests {
+    use self::wrapper::WrapperRef;
+
     use super::*;
+    
+    use std::borrow::Borrow;
+
+    struct RefImpl<'a, T>(&'a T);
+    
+    impl<'a, T> wrapper::WrapperRef<'a, T, RefImpl<'a, T>> for () {
+        fn wrap_ref(self, generic: &'a impl Borrow<T>) -> RefImpl<'a, T> {
+            RefImpl(generic.borrow())
+        }
+    }
+
+    impl<'a, T> composer::ComposerRef<'a, T> for RefImpl<'a, T> {
+        fn compose_ref(&mut self, generic: &'a impl Borrow<T>) -> &mut Self {
+            self.0 = generic.borrow();
+            self
+        }
+    }
 }

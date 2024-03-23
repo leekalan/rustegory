@@ -18,8 +18,8 @@ pub trait Injectable<T, R> {
     fn inject(self, wrapper: T) -> R;
 }
 
-pub trait InjectableRef<T, R> {
-    fn inject_ref(&self, wrapper: T) -> R;
+pub trait InjectableRef<'a, T, R: 'a> {
+    fn inject_ref(&'a self, wrapper: T) -> R;
 }
 
 pub trait TryInjectable<T, R> {
@@ -27,9 +27,9 @@ pub trait TryInjectable<T, R> {
     fn try_inject(self, wrapper: T) -> Result<R, Self::Error>;
 }
 
-pub trait TryInjectableRef<T, R> {
+pub trait TryInjectableRef<'a, T, R: 'a> {
     type Error;
-    fn try_inject_ref(&self, wrapper: T) -> Result<R, Self::Error>;
+    fn try_inject_ref(&'a self, wrapper: T) -> Result<R, Self::Error>;
 }
 
 impl<T: Wrapper<U, R>, U, R> Injectable<T, R> for U {
@@ -38,8 +38,8 @@ impl<T: Wrapper<U, R>, U, R> Injectable<T, R> for U {
     }
 }
 
-impl<T: WrapperRef<U, R>, U, R> InjectableRef<T, R> for U {
-    fn inject_ref(&self, wrapper: T) -> R {
+impl<'a, T: WrapperRef<'a, U, R>, U, R: 'a> InjectableRef<'a, T, R> for U {
+    fn inject_ref(&'a self, wrapper: T) -> R {
         wrapper.wrap_ref(self)
     }
 }
@@ -51,9 +51,9 @@ impl<T: TryWrapper<U, R>, U, R> TryInjectable<T, R> for U {
     }
 }
 
-impl<T: TryWrapperRef<U, R>, U, R> TryInjectableRef<T, R> for U {
+impl<'a, T: TryWrapperRef<'a, U, R>, U, R: 'a> TryInjectableRef<'a, T, R> for U {
     type Error = T::Error;
-    fn try_inject_ref(&self, wrapper: T) -> Result<R, Self::Error> {
+    fn try_inject_ref(&'a self, wrapper: T) -> Result<R, Self::Error> {
         wrapper.try_wrap_ref(self)
     }
 }

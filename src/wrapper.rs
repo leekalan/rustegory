@@ -16,8 +16,8 @@ pub trait Wrapper<U, R> {
     fn wrap(self, generic: U) -> R;
 }
 
-pub trait WrapperRef<U: ?Sized, R> {
-    fn wrap_ref(self, generic: impl Borrow<U>) -> R;
+pub trait WrapperRef<'a, U: ?Sized, R: 'a> {
+    fn wrap_ref(self, generic: &'a impl Borrow<U>) -> R;
 }
 
 pub trait TryWrapper<U, R> {
@@ -25,7 +25,7 @@ pub trait TryWrapper<U, R> {
     fn try_wrap(self, generic: U) -> Result<R, Self::Error>;
 }
 
-pub trait TryWrapperRef<U: ?Sized, R> {
+pub trait TryWrapperRef<'a, U: ?Sized, R: 'a> {
     type Error;
-    fn try_wrap_ref(self, generic: impl Borrow<U>) -> Result<R, Self::Error>;
+    fn try_wrap_ref(self, generic: &'a impl Borrow<U>) -> Result<R, Self::Error>;
 }
