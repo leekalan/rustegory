@@ -20,7 +20,7 @@ pub trait Embedable<T> {
     fn embed(self, composer: &mut impl BorrowMut<T>) -> &mut T;
 }
 
-pub trait EmbedableRef<'a, T> : 'a {
+pub trait EmbedableRef<'a, T>: 'a {
     fn embed_ref<'b>(&'a self, composer: &'b mut impl BorrowMut<T>) -> &'b mut T;
 }
 
@@ -31,7 +31,10 @@ pub trait TryEmbedable<T> {
 
 pub trait TryEmbedableRef<'a, T>: 'a {
     type Error;
-    fn try_embed_ref<'b>(&'a self, composer: &'b mut impl BorrowMut<T>) -> Result<&'b mut T, Self::Error>;
+    fn try_embed_ref<'b>(
+        &'a self,
+        composer: &'b mut impl BorrowMut<T>,
+    ) -> Result<&'b mut T, Self::Error>;
 }
 
 impl<T: Composer<U>, U> Embedable<T> for U {
@@ -56,8 +59,11 @@ impl<T: TryComposer<U>, U> TryEmbedable<T> for U {
 
 impl<'a, T: TryComposerRef<'a, U>, U: 'a> TryEmbedableRef<'a, T> for U {
     type Error = T::Error;
-    
-    fn try_embed_ref<'b>(&'a self, composer: &'b mut impl BorrowMut<T>) -> Result<&'b mut T, Self::Error> {
+
+    fn try_embed_ref<'b>(
+        &'a self,
+        composer: &'b mut impl BorrowMut<T>,
+    ) -> Result<&'b mut T, Self::Error> {
         composer.borrow_mut().try_compose_ref(self)
     }
 }

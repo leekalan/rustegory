@@ -87,11 +87,11 @@ mod tests {
     use self::wrapper::WrapperRef;
 
     use super::*;
-    
+
     use std::borrow::Borrow;
 
     struct RefImpl<'a, T>(&'a T);
-    
+
     impl<'a, T> wrapper::WrapperRef<'a, T, RefImpl<'a, T>> for () {
         fn wrap_ref(self, generic: &'a impl Borrow<T>) -> RefImpl<'a, T> {
             RefImpl(generic.borrow())

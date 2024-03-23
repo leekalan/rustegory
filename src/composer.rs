@@ -16,7 +16,7 @@ pub trait Composer<U> {
     fn compose(&mut self, generic: U) -> &mut Self;
 }
 
-pub trait ComposerRef<'a, U: ?Sized> : 'a {
+pub trait ComposerRef<'a, U: ?Sized>: 'a {
     fn compose_ref(&mut self, generic: &'a impl Borrow<U>) -> &mut Self;
 }
 
@@ -25,7 +25,7 @@ pub trait TryComposer<U> {
     fn try_compose(&mut self, generic: U) -> Result<&mut Self, Self::Error>;
 }
 
-pub trait TryComposerRef<'a, U: ?Sized> : 'a {
+pub trait TryComposerRef<'a, U: ?Sized>: 'a {
     type Error;
     fn try_compose_ref(&mut self, generic: &'a impl Borrow<U>) -> Result<&mut Self, Self::Error>;
 }
