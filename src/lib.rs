@@ -77,10 +77,10 @@ assert_eq!(x, vec![1, 2, 3, 4, 5]);
 
 pub mod composer;
 pub mod embedable;
+pub mod hashmap_impl;
 pub mod injectable;
 /// implementations for vectors
 pub mod vec_impl;
-pub mod hashmap_impl;
 pub mod wrapper;
 
 #[cfg(test)]
