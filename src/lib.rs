@@ -80,6 +80,7 @@ pub mod embedable;
 pub mod injectable;
 /// implementations for vectors
 pub mod vec_impl;
+pub mod hashmap_impl;
 pub mod wrapper;
 
 #[cfg(test)]
